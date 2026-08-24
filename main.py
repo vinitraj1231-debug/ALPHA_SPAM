@@ -36,17 +36,14 @@ print("\n𝐀𝐥𝐩𝐡𝐚 𝐒𝐩𝐚𝐦 𝐁𝐨𝐭𝐬 𝐃𝐞𝐩𝐥
 
 
 async def main():
-    await X1.run_until_disconnected()
-    await X2.run_until_disconnected()
-    await X3.run_until_disconnected()
-    await X4.run_until_disconnected()
-    await X5.run_until_disconnected()
-    await X6.run_until_disconnected()
-    await X7.run_until_disconnected()
-    await X8.run_until_disconnected()
-    await X9.run_until_disconnected()
-    await X10.run_until_disconnected()
+    clients = [X1, X2, X3, X4, X5, X6, X7, X8, X9, X10]
+    tasks = [client.run_until_disconnected() for client in clients if client.is_connected()]
+    if tasks:
+        await asyncio.gather(*tasks)
+    else:
+        print("Warning: No bot clients are currently connected. Please configure BOT_TOKEN in environment variables.")
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
